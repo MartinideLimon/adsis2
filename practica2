@@ -1,0 +1,73 @@
+**************************
+Practica 2
+**************************
+
+
+o8ff2 será el servidor ntp
+    nombre: ntp1
+
+        /etc/ntp.conf
+
+        server 2001:470:0:50::2 iburst
+        server 2001:470:0:2c8::2
+
+    Servidor DNS recursivo con cache: unbound
+        Demonio: unbound
+        COnfiguracion: unbound.conf
+
+        #configuracion basica
+        #unbound.conf for a local subnet
+        server:
+            interface:0.0.0.0
+            interface: ::0
+            access-control: 2001:470:736b:8ff:0000:0000/64 allow
+            access-control: ::1 allow
+            verbosity: 1
+            #opcional para actualizar seervidores autorizado raiz
+            #obtenidos con dig @a.root-servers.net . ns
+            #root-hints: fichero
+
+            #do-ip4: no
+            #prefer-ip6: yes
+
+        #enable remote-control
+        remote-control:
+            control-enable: yes
+            control-use-cert: no
+        forward-zone:
+            name:"."        #utilizar para todas las peticiones
+            forward-addr:2001:470:20::2   #he.net
+            forward-first: yes      #sin forwardear falla, intentar directo
+
+
+
+    rcctl enable ntpd
+
+    ./etc/rc.conf.local
+
+        dhcplease_flags=NO
+        pf=NO
+        sndiod_flags=NO
+        ntpd_flags=-s   #así se arrancará y fijará la hora de forma inmediata.
+
+o8ff3-ns1
+
+    ./etc/hostname.vlan899
+
+    vlan 899 vlandev vio0 up
+    inet6 2001:470:736b:8ff::3 64 -soii -temporary
+
+    ./etc/hostname.vio0
+    -inet6
+    up
+
+o8ff4-ns2
+
+    ./etc/hostname.vlan899
+
+    vlan 899 vlandev vio0 up
+    inet6 2001:470:736b:8ff::4 64 -soii -temporary
+
+    ./etc/hostname.vio0
+    -inet6
+    up
