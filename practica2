@@ -8,20 +8,21 @@ o8ff2 será el servidor ntp
 
         /etc/ntp.conf
 
-        server 2001:470:0:50::2 iburst
-        server 2001:470:0:2c8::2
+        server 2001:470:0:50::2 trusted
+        server 2001:470:0:2c8::2 trusted
 
     Servidor DNS recursivo con cache: unbound
         Demonio: unbound
         COnfiguracion: unbound.conf
 
+        /var/unbound/etc/unbound.conf
         #configuracion basica
         #unbound.conf for a local subnet
         server:
             interface:0.0.0.0
             interface: ::0
-            access-control: 2001:470:736b:8ff:0000:0000/64 allow
-            access-control: ::1 allow
+            access-control: 2001:470:736b:8ff:0000:0000/64 allow   #red local
+            access-control: ::1 allow  #loopback
             verbosity: 1
             #opcional para actualizar seervidores autorizado raiz
             #obtenidos con dig @a.root-servers.net . ns
@@ -61,13 +62,130 @@ o8ff3-ns1
     -inet6
     up
 
+    /etc/ntpd.conf
+    server @ntp1(primera maquina interna)
+
+    /etc/resolv.conf
+    nameserver @ntp1(primera maquina interna)
+
+
+
+    MAESTRO
+
+    /var/nsd/etc/nsd.conf
+
+        server:
+            hide-version:yes
+            ip-address: 2001:470:736b:8ff::3
+                database: "/var/nsd/db/nsd.db"
+                username:_nsd
+                logfile:"/var/log/nsd.log"
+                pidfile:"/var/nsd/run/nsd.pid"
+
+            port: 53
+            #numero de servidores NSD to fork
+            server-count: 1
+
+            #escucha solo en conexiones IPv6
+            ip6-only: yes
+            tcp-count: 60
+            zonesdir:"/var/nsd/zones"
+
+        remote-control:
+            control-enable:yes
+            control-interface: ::1
+            control-port:8952
+            server-key-file:"/var/nsd/etc/nsd_server.key"
+            server-cert-file:"/var/nsd/etcnsd_server.pem"
+            control-key-file:"/var/nsd/etc/nsd_control.key"
+            control-cert-file:"/var/nsd/etc/nsd_contorl.pem"
+
+        key:
+            name:"mskey"
+            algorithm:hmac-sha256
+            secret: "p0VUzIimd6ciuskUQiy2hMFTUMpsuVVGa3dbJFC630Q="
+
+        pattern:
+            name:"toslave"
+            notify:2001:470:736b:8ff::4 NOKEY
+            provide-xfr:2001:470:736b:8ff::4 NOKEY
+
+        zone:
+            name: "ff.es.eu.org"
+            zonefile: "ff.es.eu.org.directo"
+            include-pattern:"toslave"
+
+        zone:
+            name: "8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa"
+            zonefile:"ff.es.eu.org.inverso"
+            include-pattern:"toslave"
+
+
+
 o8ff4-ns2
 
     ./etc/hostname.vlan899
 
     vlan 899 vlandev vio0 up
-    inet6 2001:470:736b:8ff::4 64 -soii -temporary
+    inet6 2001:470:736nab:8ff::4 64 -soii -temporary
 
     ./etc/hostname.vio0
     -inet6
     up
+
+
+    /etc/ntpd.conf
+    server @ntp1(primera maquina interna)
+
+    /etc/resolv.conf
+    nameserver @ntp1(primera maquina interna)
+
+
+    /var/nsd/etc/nsd.conf
+
+    pattern:
+        name: "tomaster"
+        allow-notify: 2001:470:736b:8ff::3 NOKEY
+        request-xfr: AXFR 2001:470:736b:8ff::3 NOKEY
+
+    zone:
+        name: "ff.es.eu.org"
+        zonefile: "ff.es.eu.org.directo"
+        include-pattern: "tomaster"
+
+     zone:
+         name: "8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa"
+         zonefile:"ff.es.eu.org.inverso"
+         include-pattern:"tomaster"
+
+
+ficheros de zona
+
+MAESTRO
+    /var/nsd/zones/ff.es.eu.org.directo
+
+        $ORIGIN ff.es.eu.org.
+
+        @ IN SOA ns1.ff.es.eu.org. a795809@unizar.es. (
+                    20230303501 ; serial number
+                    21600 ; refresh after 6 hours
+                    3600 ; retry after 1 hour
+                    604800 ; expire after 1 week
+                    86400 ) ; minimum TTL of 1 day
+
+          IN NS ns1.ff.es.eu.org.
+
+          ns1 IN AAAA 2001:470:736b:8ff::3
+          ns2 IN AAAA 2001:470:736b:8ff::4
+          ntp1 IN AAAA 2001:470:736b:8ff:5054:ff:fe08::ff02
+          router1 IN AAAA 2001:470:736b:8ff::1
+
+          ns1 IN CNAME o8ff3
+          ns2 IN CNAME o8ff4
+          ntp1 IN CNAME o8ff2
+          router1 IN CNAME orouter8
+
+
+
+
+    /var/nsd/zones/ff.es.eu.org.inverso
