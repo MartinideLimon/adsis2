@@ -2,6 +2,12 @@
 Practica 2
 **************************
 
+virsh -c qemu+ssh://a795809@155.210.154.204/system list --all
+virsh -c qemu+ssh://a795809@155.210.154.204/system start orouter8
+virsh -c qemu+ssh://a795809@155.210.154.204/system start o8ff2
+virsh -c qemu+ssh://a795809@155.210.154.204/system start o8ff3
+virsh -c qemu+ssh://a795809@155.210.154.204/system start o8ff4
+
 
 o8ff2 será el servidor ntp
     nombre: ntp1
@@ -161,7 +167,7 @@ o8ff4-ns2
 
 ficheros de zona
 
-MAESTRO
+MAESTRO-ns1
     /var/nsd/zones/ff.es.eu.org.directo
 
         $ORIGIN ff.es.eu.org.
@@ -177,7 +183,7 @@ MAESTRO
 
           ns1 IN AAAA 2001:470:736b:8ff::3
           ns2 IN AAAA 2001:470:736b:8ff::4
-          ntp1 IN AAAA 2001:470:736b:8ff:5054:ff:fe08::ff02
+          ntp1 IN AAAA 2001:470:736b:8ff::2
           router1 IN AAAA 2001:470:736b:8ff::1
 
           ns1 IN CNAME o8ff3
@@ -187,5 +193,17 @@ MAESTRO
 
 
 
-
     /var/nsd/zones/ff.es.eu.org.inverso
+
+        $ORIGIN b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. ;default zone domain
+        3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.8.0 IN PTR ns1.ff.es.eu.org.
+
+        $ORIGIN b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. ;default zone domain
+        4.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.8.0 IN PTR ns2.ff.es.eu.org.
+
+        $ORIGIN b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. ;default zone domain
+        3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.8.0 IN PTR ntp1.ff.es.eu.org.
+
+        $ORIGIN b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. ;default zone domain
+        3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.8.0 IN PTR router1.ff.es.eu.org.
+
