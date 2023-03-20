@@ -1,0 +1,4 @@
+CentOs crear usario
+    adduser username
+    passwd username
+    usermod -a -G wheel username

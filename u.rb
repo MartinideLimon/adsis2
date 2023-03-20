@@ -2,6 +2,8 @@
 
 require 'net/ping'
 require 'net/ssh'
+require 'timeout'
+
 # u subcomando opciones
 
 file_data = File.read("./hosts").split
@@ -20,16 +22,23 @@ if ARGV[0] == 'p'
     end
 elsif ARGV[0] == 's'
     file_data.each do |host|
-            Net::SSH.start(host, "a795809") do |ssh|
-            result = ssh.exec!("ls -l")
 
-            if result != null
-                v = "FUNCIONA"
+
+
+            pingable = Net::Ping::External.new(host)
+
+            if pingable.ping? == true
+                Net::SSH.start(host, "a795809") do |ssh|
+                    puts "Maquina  #{host}  : funciona"
+                    args = ARGV.slice(1, ARGV.length-1)
+                    result = ssh.exec!(args)
+                    puts result
+                end
             else
-                v = "falla"
+
+                puts "Maquina  #{host}  NO ESTA DISPONIBLE"
+
+
             end
-            puts "Maquina  #{host}  : #{v}"
-            puts result
-        end
     end
 end
