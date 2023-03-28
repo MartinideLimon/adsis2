@@ -207,3 +207,20 @@ MAESTRO-ns1
         $ORIGIN b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. ;default zone domain
         3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.8.0 IN PTR router1.ff.es.eu.org.
 
+
+
+
+
+
+
+
+ nsd-checkzone 8.ff.es.eu.org 8.ff.es.eu.org.directo
+ nsd-checkzone 8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 8.ff.es.eu.org.inverso
+ nsd-control reload
+
+
+
+
+
+
+
