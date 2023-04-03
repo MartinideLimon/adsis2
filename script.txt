@@ -21,8 +21,11 @@ dig -6 -x 2001:470:736b:820::3
 dig -6 -x 2001:470:736b:820::4
 dig -6 -x 2001:470:736b:8ff::E
 
+<<<<<<< HEAD
 dig -6 @2001:470:736B:811::2 AAAA  ntp1.8.ff.es.eu.org
 
+=======
+>>>>>>> e299007dcf628596236b38ec84c0ccd405f556d3
 
 ntpdctl -s all
 ntpdate -q ntp.time.nl

@@ -3,6 +3,7 @@ CentOs crear usario
     passwd username
     usermod -a -G wheel username
 
+<<<<<<< HEAD
 
 
 
@@ -37,10 +38,53 @@ IPA1
             nameserver 2001:470:736b:820::2  ##UNBOUND
 
         /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
+=======
+Router IP.forwarding
+RED
+Maquinas CentOs:
+    +3. /etc/sysconfig/network https://martinfigueredo.com/administracion-de-interfaces-linux-centos/
+            Este archivo especifica la configuración de red global. Por ejemplo, puede especificar la puerta de enlace predeterminada en este archivo:
+            # cat /etc/sysconfig/network
+            GATEWAY=192.168.2.1
+
+    https://www.snel.com/support/how-to-configure-802-1q-vlan-tagging-on-centos-7/
+    IPV6ADDR
+
+
+Comandos Útiles:
+    nmcli -p dev #saca las interfaces de red
+    ip a #saca las interfaces de manera mas extensa
+IPA1-
+
+    fichero /etc/sysconfig/network
+
+        GATEWAY=2001:470736b:811::1
+
+    cmd route add default gw 2001:470:736b:811::1 #esto es temporal
+
+    Configuración vlan811
+
+        fichero /etc/sysconfig/network-scripts/ifcfg-eth0.811
+
+            DEVICE=eth0.811
+            BOOTPROTO=static #es cómo se asigna una dirección IP (estático es un valor introducido manualmente, DHCP significa que la dirección IP se asigna automáticamente)
+
+            ONBOOT=yes # es el método para iniciar su interfaz de red (sí - automático, No - manual)
+            IP6ADDR=2001:470:736b:811::2
+            PREFIX=64
+            NETWORK=2001:470:736b:811::
+            VLAN=yes
+
+
+        cmd systemctl restart network
+
+        fichero /etc/sysconfig/network-scripts/ifcfg-eth0
+>>>>>>> e299007dcf628596236b38ec84c0ccd405f556d3
 
             IPV6_AUTOCONF="yes" => "no"
 
 
+<<<<<<< HEAD
         /ETC/HOSTNAME
             ipa1
 
@@ -178,12 +222,15 @@ NFS1
 
 **************************************************************************
 TODO: introducirlo en el fichero de los clientes
+=======
+>>>>>>> e299007dcf628596236b38ec84c0ccd405f556d3
         fichero /etc/sysctl.conf
             net.ipv6.conf.eth0.use_tempaddr=0
             net.ipv6.conf.eth0.autoconf=0
             net.ipv6.conf.eth0.accept_ra=0
 
 
+<<<<<<< HEAD
 Comandos útiles:
 
     RED:
@@ -219,3 +266,10 @@ Enlaces de interes:
     https://kb.rolosa.com/dns-forwarder-vs-dns-resolver/
 
     https://docs.sophos.com/nsg/sophos-utm/utm/9.708/help/en-us/Content/utm/utmAdminGuide/NetworkServicesDNSForwarders.htm
+=======
+
+Enlaces de interes:
+    https://informaticamadridmayor.es/tips/configuracion-de-la-configuracion-de-red-en-rhel-centos/
+
+    https://my.simplercloud.com/index.php?/knowledgebase/article/183/how-to-configure-static-ipv6-address-on-centos-/
+>>>>>>> e299007dcf628596236b38ec84c0ccd405f556d3
