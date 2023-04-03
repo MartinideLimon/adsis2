@@ -57,19 +57,19 @@ optparse = OptionParser.new do|opts|
 		options[:router] = true
 	end
 
-	opts.on( '-0', '--backup', 'Realizará el backup de las practicas 1, 2, 3 en ./backup/' ) do
+	opts.on( '-0', '--backup', 'Realizará el backup de las practicas 1, 2, 3 en ../backup/' ) do
 		options[:back] = true
 	end
 
-	opts.on( '-1', '--backup1', 'Realizará el backup de las maquinas (qcow2) de la practica 1 en ./backup/' ) do
+	opts.on( '-1', '--backup1', 'Realizará el backup de las maquinas (qcow2) de la practica 1 en ../backup/' ) do
 		options[:back1] = true
 	end
 
-	opts.on( '-2', '--backup2', 'Realizará el backup de las maquinas (qcow2) de la practica 2 en ./backup/' ) do
+	opts.on( '-2', '--backup2', 'Realizará el backup de las maquinas (qcow2) de la practica 2 en ../backup/' ) do
 		options[:back2] = true
 	end
 
-	opts.on( '-3', '--backup3', 'Realizará el backup de las maquinas (qcow2) de la practica 3 en ./backup/' ) do
+	opts.on( '-3', '--backup3', 'Realizará el backup de las maquinas (qcow2) de la practica 3 en ../backup/' ) do
 		options[:back3] = true
 	end
 
@@ -102,15 +102,15 @@ optparse.parse!
 if options[:xml]
 
 	P1.each do|r|
-			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ../backup/")
 			system("sleep 2")
 	end
 	P2.each do|r|
-		system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+		system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ../backup/")
 		system("sleep 2")
 	end
 	P3.each do|r|
-		system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+		system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ../backup/")
 		system("sleep 2")
 	end
 
@@ -120,7 +120,7 @@ end
 if (options[:back] || options[:back1]) && !options[:shut] && !options[:on]
 
 	P1.each do|r|
-			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ./backup/")
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ../backup/")
 			system("sleep 2")
 	end
 end
@@ -129,7 +129,7 @@ end
 if (options[:back] || options[:back2]) && !options[:shut] && !options[:on]
 
 	P2.each do|r|
-			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ./backup/")
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ../backup/")
 			system("sleep 2")
 	end
 end
@@ -138,7 +138,7 @@ end
 if (options[:back] || options[:back3]) && !options[:shut] && !options[:on]
 
 	P3.each do|r|
-			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ./backup/")
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.qcow2 ../backup/")
 			system("sleep 2")
 	end
 end
