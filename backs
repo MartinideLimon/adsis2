@@ -1,0 +1,41 @@
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8cliente1.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8cliente2.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff2.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff3.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff4.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ipa1.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ipa2.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8nfs1.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8router81.qcow2 ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/orouter8.qcow2 ./backup/
+
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8cliente1.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8cliente2.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff2.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff3.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ff4.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ipa1.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8ipa2.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8nfs1.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/o8router81.xml ./backup/
+scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/orouter8.xml ./backup/
+
+
+
+	if options[:back] || options[:router]
+		ROUTERS.each do|r|
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+		end
+	end
+
+	if options[:back] || options[:back1] || options[:back2]
+		MAQP12.each do|r|
+		system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+		end
+	end
+
+	if options[:back] || options[:back1] || options[:back3]
+		MAQP3.each do|r|
+			system("scp a795809@155.210.154.204:/misc/alumnos/as2/as22022/a795809/#{r}.xml ./backup/")
+		end
+	end

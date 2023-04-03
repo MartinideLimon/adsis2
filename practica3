@@ -1,0 +1,221 @@
+CentOs crear usario
+    adduser username
+    passwd username
+    usermod -a -G wheel username
+
+
+
+
+    -Glue records: A glue record provides the IP address of a nameserver so that the domain can be resolved in the case where the name server is hosted at the same domain as the domain name itself.
+    Dan la @IP de un servidor de nombres para que se pueda resolver en el caso que este ubicado en el mismo dominio.
+
+
+RED
+
+orouter8
+    /ETC/HOSTNAME/VLAN810
+        !route add -inet6 2001:470:736b:811::/64 2001:470:736b::810::2
+        !route add -inet6 2001:470:736b:812::/64 2001:470:736b::810::2
+
+
+
+IPA1
+
+    Configuración vlan811
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0.811
+
+            DEVICE=eth0.811
+            ONBOOT=yes # es el método para iniciar su interfaz de red (sí - automático, No - manual)
+            BOOTPROTO=none #es cómo se asigna una dirección IP (estático es un valor introducido manualmente, DHCP significa que la dirección IP se asigna automáticamente)
+            IPV6INIT=yes
+            IPV6ADDR=2001:470:736b:811::2/64
+            IPV6_DEFAULTGW=2001:470:736b:811::1
+            VLAN=yes
+
+        /ETC/RESOLV.CONF
+            nameserver 2001:470:736b:820::2  ##UNBOUND
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
+
+            IPV6_AUTOCONF="yes" => "no"
+
+
+        /ETC/HOSTNAME
+            ipa1
+
+        /ETC/HOSTS
+            127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+            ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+            2001:470:736b:811::2 ipa1 ipa1.1.8.ff.es.eu.org
+
+        /VAR/NSD/ZONES/8.ff.es.eu.org.directo
+
+            1 IN NS ipa1.1.8.ff.es.eu.org. ;delegación de subdominio
+
+            ipa1.1.8.ff.es.eu.org. IN AAAA 2001:470:736b:811::2
+
+        /VAR/NSD/ZONES/8.ff.es.eu.org.inverso
+
+            1 IN NS ipa1.1.8.ff.es.eu.org. ;delegación de subdominio
+
+            2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.1 IN PTR ipa1.1.8.ff.es.eu.org.
+
+    Chrony:
+
+        /ETC/CHRONY.CONF
+            server 2001:470:736b:820::2
+
+    Configuración FreeIPA:
+
+        ipa-server-install --uninstall
+        Instalar paquetes ipa-server, bind, bind-dyndb-ldap, en CentOS
+
+        yum install ipa-server
+        yum install bind
+        yum install bind-dyndb-ldap
+        yum install ipa-server-dns
+        ipa-server-install
+
+        Do you want to configure integrated DNS (BIND)? [no]: yes
+        Do you want to configure DNS forwarders? [yes]: no
+            A DNS forwarder is a Domain Name System (DNS) server on a network used to forward DNS queries for external DNS names to DNS servers outside of that network.
+            El DNS Forwarder reenviará las solicitudes a otro solucionador de DNS si no “conoce” la respuesta. (por ejemplo, no tiene autoridad o no está en la caché), y si obtiene un resultado, lo almacenará en una caché rápida y ligera (no un solucionador) que requiere servidores DNS ascendentes para que las solicitudes posteriores puedan usar el resultado en caché hasta que expire el TTL (tiempo de vida).
+        Do you want to search for missing reverse zones? [yes]: yes
+            The script prompts to check if any DNS reverse (PTR) records for the IP addresses associated with the server need to be configured. (Pero no las encuentra).
+            Podemos usar un servicio DNS externo a este para esto.
+
+        systemctl restart dbus
+
+        Next steps:
+        1. You must make sure these network ports are open:
+                TCP Ports:
+                  * 80, 443: HTTP/HTTPS
+                  * 389, 636: LDAP/LDAPS
+                  * 88, 464: kerberos
+                  * 53: bind
+                UDP Ports:
+                  * 88, 464: kerberos
+                  * 53: bind
+                  * 123: ntp
+
+        2. You can now obtain a kerberos ticket using the command: 'kinit admin'
+           This ticket will allow you to use the IPA tools (e.g., ipa user-add)
+           and the web user interface.
+
+        Be sure to back up the CA certificates stored in /root/cacert.p12
+        These files are required to create replicas. The password for these
+        files is the Directory Manager password
+
+
+
+
+
+orouter81
+
+    Activación demonio rad:
+        rcctl enable rad
+
+    /ETC/RAD.CONF
+        interface vlan812
+
+o8cliente1
+
+    /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0.812
+
+        DEVICE="eth0.812"
+        ONBOOT="YES"
+        BOOTPROTO="none"
+        VLAN="yes"
+        IPV6INIT="YES"
+
+IPA2
+
+
+    Configuración vlan811
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0.811
+
+            DEVICE=eth0.811
+            ONBOOT=yes # es el método para iniciar su interfaz de red (sí - automático, No - manual)
+            BOOTPROTO=none #es cómo se asigna una dirección IP (estático es un valor introducido manualmente, DHCP significa que la dirección IP se asigna automáticamente)
+            IPV6INIT=yes
+            IPV6ADDR=2001:470:736b:811::3/64
+            IPV6_DEFAULTGW=2001:470:736b:811::1
+            VLAN=yes
+
+        /ETC/RESOLV.CONF
+            nameserver 2001:470:736b:820::2 ##UNBOUND
+
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
+
+            IPV6_AUTOCONF="yes" => "no"
+
+
+
+
+NFS1
+
+    Configuración vlan811
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0.811
+
+            DEVICE=eth0.811
+            ONBOOT=yes # es el método para iniciar su interfaz de red (sí - automático, No - manual)
+            BOOTPROTO=none #es cómo se asigna una dirección IP (estático es un valor introducido manualmente, DHCP significa que la dirección IP se asigna automáticamente)
+            IPV6INIT=yes
+            IPV6ADDR=2001:470:736b:811::4/64
+            IPV6_DEFAULTGW=2001:470:736b:811::1
+            VLAN=yes
+
+        /ETC/RESOLV.CONF
+            nameserver 2001:470:736b:820::2 ##UNBOUND
+
+        /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
+
+            IPV6_AUTOCONF="yes" => "no"
+
+**************************************************************************
+TODO: introducirlo en el fichero de los clientes
+        fichero /etc/sysctl.conf
+            net.ipv6.conf.eth0.use_tempaddr=0
+            net.ipv6.conf.eth0.autoconf=0
+            net.ipv6.conf.eth0.accept_ra=0
+
+
+Comandos útiles:
+
+    RED:
+        systemctl restart network
+
+        nmcli -p dev #saca las interfaces de red
+
+        ip a #saca las interfaces de manera mas extensa
+
+    chronyc tracking
+    systemctl restart chronyd
+    chronyc sources
+    chronyc makestep
+    timedatectl
+
+
+Enlaces de interes:
+
+    https://martinfigueredo.com/administracion-de-interfaces-linux-centos/
+
+    https://informaticamadridmayor.es/tips/configuracion-de-la-configuracion-de-red-en-rhel-centos/
+
+    https://my.simplercloud.com/index.php?/knowledgebase/article/183/how-to-configure-static-ipv6-address-on-centos-/
+
+    https://www.snel.com/support/how-to-configure-802-1q-vlan-tagging-on-centos-7/
+
+    https://tinouy.com/2019/02/08/instalando-free-ipa
+
+    https://access.redhat.com/documentation/es-es/red_hat_enterprise_linux/7/html/linux_domain_identity_authentication_and_policy_guide/installing-ipa
+
+    https://ns1.com/blog/glue-records-and-dedicated-dns
+
+    https://kb.rolosa.com/dns-forwarder-vs-dns-resolver/
+
+    https://docs.sophos.com/nsg/sophos-utm/utm/9.708/help/en-us/Content/utm/utmAdminGuide/NetworkServicesDNSForwarders.htm

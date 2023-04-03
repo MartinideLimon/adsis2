@@ -1,0 +1,28 @@
+ssh -6 a795809@2001:470:736b:f000::181
+ssh -6 a795809@2001:470:736b:8ff::2
+ssh -6 2001:470:736b:8ff::3
+ssh -6 2001:470:736b:8ff::4
+
+
+Comprobacion directo:
+dig -6 AAAA router1.8.ff.es.eu.org
+dig -6 AAAA o8ff2.8.ff.es.eu.org
+dig -6 AAAA o8ff3.8.ff.es.eu.org
+dig -6 AAAA o8ff4.8.ff.es.eu.org
+dig -6 AAAA esa.8.ff.es.eu.org
+dig -6 @2001:470:736B:820::4 AAAA  esa.8.ff.es.eu.org
+
+
+
+Comprobacion inverso:
+dig -6 -x 2001:470:736b:820::1
+dig -6 -x 2001:470:736b:820::2
+dig -6 -x 2001:470:736b:820::3
+dig -6 -x 2001:470:736b:820::4
+dig -6 -x 2001:470:736b:8ff::E
+
+dig -6 @2001:470:736B:811::2 AAAA  ntp1.8.ff.es.eu.org
+
+
+ntpdctl -s all
+ntpdate -q ntp.time.nl
