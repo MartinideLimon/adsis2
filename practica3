@@ -211,9 +211,9 @@ IPA2
             IPV6_AUTOCONF="yes" => "no"
 
 
-    Tenemos que crear un cliente para luego crear una replica
-
-        yum install ipa-client
+    En el servidor FREEIPA
+        ipa-replica-prepare esta permitido solo en domain 0
+        sudo ipa-replica-prepare --ip-address=2001:470:736b:811::3 ipa2.1.8.ff.es.eu.org
 
 NFS1
 
@@ -259,6 +259,8 @@ Comandos útiles:
     chronyc sources
     chronyc makestep
     timedatectl
+    systemctl enable chronyd para cuando se encienda
+    timedatectl set-ntp true
 
 
 Enlaces de interes:
