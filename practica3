@@ -2,6 +2,7 @@ CentOs crear usario
     adduser username
     passwd username
     usermod -a -G wheel username
+
 CentOs claves ssh
     mkdir -p ~/.ssh
     echo public_key_string >> ~/.ssh/authorized_keys
@@ -85,7 +86,7 @@ IPA1-
         /ETC/HOSTS
             127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
             ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-            2001:470:736b:811::2 ipa1 ipa1.1.8.ff.es.eu.org
+            2001:470:736b:811::2 ipa1.1.8.ff.es.eu.org
 
         /VAR/NSD/ZONES/8.ff.es.eu.org.directo
 
@@ -99,7 +100,7 @@ IPA1-
 
             2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1.1 IN PTR ipa1.1.8.ff.es.eu.org.
 
-    Chrony:
+    Chrony:ys
 
         /ETC/CHRONY.CONF
             server 2001:470:736b:820::2
@@ -132,7 +133,7 @@ IPA1-
         Do you want to configure DNS forwarders? [yes]: no
             A DNS forwarder is a Domain Name System (DNS) server on a network used to forward DNS queries for external DNS names to DNS servers outside of that network.
             El DNS Forwarder reenviará las solicitudes a otro solucionador de DNS si no “conoce” la respuesta. (por ejemplo, no tiene autoridad o no está en la caché), y si obtiene un resultado, lo almacenará en una caché rápida y ligera (no un solucionador) que requiere servidores DNS ascendentes para que las solicitudes posteriores puedan usar el resultado en caché hasta que expire el TTL (tiempo de vida).
-        Do you want to search for missing reverse zones? [yes]: yes
+        Do you want to search for missing reverse zones? [yes]: no
             The script prompts to check if any DNS reverse (PTR) records for the IP addresses associated with the server need to be configured. (Pero no las encuentra).
             Podemos usar un servicio DNS externo a este para esto.
 
@@ -161,7 +162,16 @@ Be sure to back up the CA certificates stored in /root/cacert.p12
 These files are required to create replicas. The password for these
 files is the Directory Manager password
 
+    ipa user-find
 
+        User login: admin
+        Last name: Administrator
+        Home directory:/home/admin
+        Login shell: /bin/bash
+        Principal alias: admin@1.8.FF.ES.EU.ORG
+        UID: 845200000
+        GID: 845200000
+        Account disabled: False
 
 
     Creación de réplica:
