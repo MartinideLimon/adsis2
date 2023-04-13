@@ -9,3 +9,7 @@ virsh -c qemu+ssh://a795809@155.210.154.204/system define o8ipa1.xml
 virsh -c qemu+ssh://a795809@155.210.154.204/system undefine o8ipa1
 
 scp a795809@155.210.154.204:/misc/usuarios/unai/proyectoAS2/ProyectoParte1.tar.xz .
+
+
+
+/usr/local/etc/wake -y lab102-204

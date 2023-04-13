@@ -11,6 +11,7 @@ dig -6 AAAA o8ff3.8.ff.es.eu.org
 dig -6 AAAA o8ff4.8.ff.es.eu.org
 dig -6 AAAA esa.8.ff.es.eu.org
 dig -6 @2001:470:736B:820::4 AAAA  esa.8.ff.es.eu.org
+dig -6 AAAA ipa1.1.8.ff.es.eu.org
 
 
 
