@@ -1,0 +1,11 @@
+qemu-img create -f qcow2 -o backing_file=o.qcow2 orouterW.qcow2
+
+qemu-img create -f qcow2 -o backing_file=o874.qcow2 o8ipa1.qcow2
+
+virsh -c qemu+ssh://<usuario>@155.210.154.210/system define orouterW.xml
+
+virsh -c qemu+ssh://a795809@155.210.154.204/system define o8ipa1.xml
+
+virsh -c qemu+ssh://a795809@155.210.154.204/system undefine o8ipa1
+
+scp a795809@155.210.154.204:/misc/usuarios/unai/proyectoAS2/ProyectoParte1.tar.xz .
