@@ -88,6 +88,9 @@ IPA1-
             ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
             2001:470:736b:811::2 ipa1.1.8.ff.es.eu.org
 
+        /etc/resolv.conf
+            nameserver ::1
+
         UNBOUND
         /VAR/NSD/ZONES/8.ff.es.eu.org.directo
 
@@ -146,7 +149,7 @@ IPA1-
             Number of entries returned 0
             ----------------------------
             [a795809@ipa1 ~]$ ipa dnsrecord-add
-            Record name: ipa2
+            Record name: ipa2.1.8.ff.es.eu.org.
             Zone name: 1.8.ff.es.eu.org.
             Please choose a type of DNS resource record to be added
             The most common types for this type of zone are: A, AAAA
@@ -159,8 +162,8 @@ IPA1-
     *Configuración FreeIPA REPLICA:
         - ipa-replica-prepare ipa2.1.8.ff.es.eu.org
 
-                /var/lib/ipa/
-        - scp replica-info-ipa2.1.8.ff.es.eu.org.gpg  a795809@[2001:470:736b:811::3]:/home/a795809/var/lib/ipa/
+
+        - scp /var/lib/ipa/replica-info-ipa2.1.8.ff.es.eu.org.gpg a795809@[2001:470:736b:811::3]:/home/a795809/
 
 
         yum install ipa-server
@@ -174,6 +177,9 @@ IPA1-
         - ipa-replica-install fichero
         - ipa-dns-install
         - ipa dnsrecord-add
+        - ipa dnszone-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa.
+        - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec ipa2.1.8.ff.es.eu.org.
+        - ipa dnsrecord-del 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec ipa2.1.8.ff.es.eu.org.
 
         ipa server-del ipa2.1.8.ff.es.eu.org
 
@@ -254,8 +260,8 @@ IPA2
             VLAN=yes
 
         /ETC/RESOLV.CONF
-            nameserver 2001:470:736b:820::2 ##UNBOUND
-
+            nameserver 2001:470:736b:820::2 ##UNBOUND ESTO NO ESTA
+            nameserver 2001:470:736b:811::2
 
         /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
 
