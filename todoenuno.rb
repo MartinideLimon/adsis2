@@ -18,8 +18,8 @@ ips = Hash["orouter8" => "2001:470:736b:f000::181",
            "o8ipa1" => "2001:470:736b:811::2",
            "o8ipa2"  => "2001:470:736b:811::3",
            "o8nfs1" => "2001:470:736b:811::4",
-           "o8cliente1" => "1",
-           "o8cliente2"=> "2"]
+           "o8cliente1" => "2001:470:736b:812:5054:ff:fe08:1205",
+           "o8cliente2" => "2001:470:736b:812:5054:ff:fe08:1206"]
 
 options = {}
 optparse = OptionParser.new do|opts|

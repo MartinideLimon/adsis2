@@ -39,26 +39,7 @@ IPA1
             nameserver 2001:470:736b:820::2  ##UNBOUND
 
         /ETC/SYSCONFIG/NETWORK-SCRIPTS/IFCFG-ETH0
-=======
-Router IP.forwarding
-RED
-Maquinas CentOs:
-    +3. /etc/sysconfig/network https://martinfigueredo.com/administracion-de-interfaces-linux-centos/
-            Este archivo especifica la configuración de red global. Por ejemplo, puede especificar la puerta de enlace predeterminada en este archivo:
-            # cat /etc/sysconfig/network
-            GATEWAY=192.168.2.1
-
-    https://www.snel.com/support/how-to-configure-802-1q-vlan-tagging-on-centos-7/
-    IPV6ADDR
-
-
 IPA1-
-
-    fichero /etc/sysconfig/network
-
-        GATEWAY=2001:470736b:811::1
-
-    cmd route add default gw 2001:470:736b:811::1 #esto es temporal
 
     Configuración vlan811
 
@@ -74,7 +55,7 @@ IPA1-
             VLAN=yes
 
 
-        cmd systemctl restart network
+
 
         fichero /etc/sysconfig/network-scripts/ifcfg-eth0
 
@@ -87,6 +68,7 @@ IPA1-
             127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
             ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
             2001:470:736b:811::2 ipa1.1.8.ff.es.eu.org
+            2001:470:736b:811::3 ipa2.1.8.ff.es.eu.org
 
         /etc/resolv.conf
             nameserver ::1
@@ -172,9 +154,7 @@ IPA1-
         yum install ipa-server-dns
         ipa-server-install
 
-
-
-        - ipa-replica-install fichero
+        - ipa-replica-install replica-info-ipa2.1.8.ff.es.eu.org.gpg
         - ipa-dns-install
         - ipa dnsrecord-add
         - ipa dnszone-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa.
@@ -186,28 +166,6 @@ IPA1-
 
         hostnamectl set-hostname ipa2.1.8.ff.es.eu.org
 
-==============================================================================
-Setup complete
-
-Next steps:
-        1. You must make sure these network ports are open:
-                TCP Ports:
-                  * 80, 443: HTTP/HTTPS
-                  * 389, 636: LDAP/LDAPS
-                  * 88, 464: kerberos
-                  * 53: bind
-                UDP Ports:
-                  * 88, 464: kerberos
-                  * 53: bind
-                  * 123: ntp
-
-        2. You can now obtain a kerberos ticket using the command: 'kinit admin'
-           This ticket will allow you to use the IPA tools (e.g., ipa user-add)
-           and the web user interface.
-
-Be sure to back up the CA certificates stored in /root/cacert.p12
-These files are required to create replicas. The password for these
-files is the Directory Manager password
 
     ipa user-find
 
@@ -221,8 +179,54 @@ files is the Directory Manager password
         Account disabled: False
 
 
-    Creación de réplica:
-        ipa-replica-install --principal admin --admin-password lojusto2
+    ipa user-add
+
+        --------------------
+        Added user "a795809"
+        --------------------
+        User login: a795809
+        First name: Martina
+        Last name: Universidad
+        Full name: Martina Universidad
+        Display name: Martina Universidad
+        Initials: MU
+        Home directory: /home/a795809
+        GECOS: Martina Universidad
+        Login shell: /bin/sh
+        Principal name: a795809@1.8.FF.ES.EU.ORG
+        Principal alias: a795809@1.8.FF.ES.EU.ORG
+        Email address: a795809@1.8.ff.es.eu.org
+        UID: 845200003
+        GID: 845200003
+        Password: False
+        Member of groups: ipausers
+        Kerberos keys available: False
+
+
+        --------------------
+        Added user "martina"
+        --------------------
+        User login: martina
+        First name: MArtina
+        Last name: Gracia
+        Full name: MArtina Gracia
+        Display name: MArtina Gracia
+        Initials: MG
+        Home directory: /home/martina
+        GECOS: MArtina Gracia
+        Login shell: /bin/sh
+        Principal name: martina@1.8.FF.ES.EU.ORG
+        Principal alias: martina@1.8.FF.ES.EU.ORG
+        Email address: martina@1.8.ff.es.eu.org
+        UID: 845200001
+        GID: 845200001
+        Password: False
+        Member of groups: ipausers
+        Kerberos keys available: False
+
+
+
+
 
 
 orouter81
