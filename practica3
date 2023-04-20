@@ -44,7 +44,7 @@ IPA1-
     Configuración vlan811
 
         fichero /etc/sysconfig/network-scripts/ifcfg-eth0.811
-
+chmod -R go= ~/.ssh
             DEVICE=eth0.811
             BOOTPROTO=static #es cómo se asigna una dirección IP (estático es un valor introducido manualmente, DHCP significa que la dirección IP se asigna automáticamente)
 
@@ -159,10 +159,22 @@ IPA1-
         - ipa dnsrecord-add
         - ipa dnszone-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa.
         - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec ipa2.1.8.ff.es.eu.org.
-        - ipa dnsrecord-del 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec ipa2.1.8.ff.es.eu.org.
+        - ipa dnsrecord-add/del 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec ipa2.1.8.ff.es.eu.org.
 
-        ipa server-del ipa2.1.8.ff.es.eu.org
+        - ipa dnsrecord-add 1.8.ff.es.eu.org. nfs1 --aaaa-rec 2001:470:736b:811::4
+        - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec nfs1.1.8.ff.es.eu.org.
 
+        Cliente1 HAY QUE CAMBIARLO
+        - ipa dnsrecord-add 1.8.ff.es.eu.org. cliente1 --aaaa-rec 2001:470:736b:812:5054:ff:fe08:1205
+        - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 5.0.2.1.8.0.e.f.f.f.0.0.4.5.0.5.2 --ptr-rec cliente1.1.8.ff.es.eu.org.
+
+        Cliente2
+        - ipa dnsrecord-add 1.8.ff.es.eu.org. cliente2 --aaaa-rec 2001:470:736b:812:5054:ff:fe08:1206
+        - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 6.0.2.1.8.0.e.f.f.f.0.0.4.5.0.5.2 --ptr-rec cliente2.1.8.ff.es.eu.org.
+
+
+        ipa dnsrecord-find 1.8.ff.es.eu.org.
+        ipa dnsrecord-find 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa.
 
         hostnamectl set-hostname ipa2.1.8.ff.es.eu.org
 
