@@ -94,6 +94,7 @@ chmod -R go= ~/.ssh
     Configuración FreeIPA:
 
         ipa-server-install --uninstall
+        ipa-client-install --uninstall
         Instalar paquetes ipa-server, bind, bind-dyndb-ldap, en CentOS
 
         yum install ipa-server
@@ -351,7 +352,7 @@ Comandos útiles:
 ipapython.admintool: ERROR    Unable to resolve host name, check /etc/hosts or DNS name resolution
 ipapython.admintool: ERROR    The ipa-replica-install command failed. See /var/log/ipareplica-install.log for more information
 
-
+kinit: Cannot find KDC for realm "1.8.FF.ES.EU.ORG" while getting initial credentials
 
 Enlaces de interes:
 

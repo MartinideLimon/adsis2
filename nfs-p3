@@ -76,7 +76,20 @@ NFS1 2º
 
 IPA1 1º
 
+	/etc/resolv.conf
+	2001:470:736b:811::2
 	ipa service-add nfs/nfs1.1.8.ff.es.eu.org
+
+			[a795809@ipa1 ~]$ ipa service-add nfs/nfs1.1.8.ff.es.eu.org
+			----------------------------------------------------------
+			Added service "nfs/nfs1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG"
+			----------------------------------------------------------
+			Principal name: nfs/nfs1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Principal alias: nfs/nfs1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Managed by: nfs1.1.8.ff.es.eu.org
+
+
+
 	ipa service-add nfs/cliente1.1.8.ff.es.eu.org
 	ipa service-add nfs/cliente2.1.8.ff.es.eu.org
 
@@ -103,4 +116,9 @@ CLiente2
 
 
 ipa: ERROR: The host 'nfs1.1.8.ff.es.eu.org' does not exist to add a service to.
+/etc/resolv.conf cambio de server
+
+kinit: Cannot find KDC for realm "1.8.FF.ES.EU.ORG" while getting initial credentials
+/etc/resolv.conf en nfs1
+
 
