@@ -99,7 +99,7 @@ chmod -R go= ~/.ssh
         yum install ipa-server
         yum install bind
         yum install bind-dyndb-ldap
-        yum install ipa-server-dns
+        -
         ipa-server-install
         sudo ipa-server-install --domain-level 0
 
@@ -164,7 +164,7 @@ chmod -R go= ~/.ssh
         - ipa dnsrecord-add 1.8.ff.es.eu.org. nfs1 --aaaa-rec 2001:470:736b:811::4
         - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1 --ptr-rec nfs1.1.8.ff.es.eu.org.
 
-        Cliente1 HAY QUE CAMBIARLO
+        Cliente1
         - ipa dnsrecord-add 1.8.ff.es.eu.org. cliente1 --aaaa-rec 2001:470:736b:812:5054:ff:fe08:1205
         - ipa dnsrecord-add 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa. 5.0.2.1.8.0.e.f.f.f.0.0.4.5.0.5.2 --ptr-rec cliente1.1.8.ff.es.eu.org.
 
@@ -177,6 +177,9 @@ chmod -R go= ~/.ssh
         ipa dnsrecord-find 1.8.0.b.6.3.7.0.7.4.0.1.0.0.2.ip6.arpa.
 
         hostnamectl set-hostname ipa2.1.8.ff.es.eu.org
+        hostnamectl set-hostname nfs1.1.8.ff.es.eu.org
+        hostnamectl set-hostname cliente1.1.8.ff.es.eu.org
+        hostnamectl set-hostname cliente2.1.8.ff.es.eu.org
 
 
     ipa user-find
