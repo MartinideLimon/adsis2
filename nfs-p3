@@ -1,0 +1,106 @@
+NFS1 2º
+
+	sudo ipa-client-install --enable-dns-updates --force-ntpd
+			sudo ipa-client-install --enable-dns-updates --force-ntpd
+			Discovery was successful!
+			Client hostname: nfs1.1.8.ff.es.eu.org
+			Realm: 1.8.FF.ES.EU.ORG
+			DNS Domain: 1.8.ff.es.eu.org
+			IPA Server: ipa2.1.8.ff.es.eu.org
+			BaseDN: dc=1,dc=8,dc=ff,dc=es,dc=eu,dc=org
+
+			Continue to configure the system with these values? [no]: yes
+			Synchronizing time with KDC...
+			Attempting to sync time using ntpd.  Will timeout after 15 seconds
+			User authorized to enroll computers: admin
+			Password for admin@1.8.FF.ES.EU.ORG:
+			Successfully retrieved CA cert
+				Subject:     CN=Certificate Authority,O=1.8.FF.ES.EU.ORG
+				Issuer:      CN=Certificate Authority,O=1.8.FF.ES.EU.ORG
+				Valid From:  2023-04-12 20:58:15
+				Valid Until: 2043-04-12 20:58:15
+
+			Enrolled in IPA realm 1.8.FF.ES.EU.ORG
+			Created /etc/ipa/default.conf
+			New SSSD config will be created
+			Configured sudoers in /etc/nsswitch.conf
+			Configured /etc/sssd/sssd.conf
+			Configured /etc/krb5.conf for IPA realm 1.8.FF.ES.EU.ORG
+			trying https://ipa2.1.8.ff.es.eu.org/ipa/json
+			[try 1]: Forwarding 'schema' to json server 'https://ipa2.1.8.ff.es.eu.org/ipa/json'
+			trying https://ipa2.1.8.ff.es.eu.org/ipa/session/json
+			[try 1]: Forwarding 'ping' to json server 'https://ipa2.1.8.ff.es.eu.org/ipa/session/json'
+			[try 1]: Forwarding 'ca_is_enabled' to json server 'https://ipa2.1.8.ff.es.eu.org/ipa/session/json'
+			Systemwide CA database updated.
+			Adding SSH public key from /etc/ssh/ssh_host_rsa_key.pub
+			Adding SSH public key from /etc/ssh/ssh_host_ecdsa_key.pub
+			Adding SSH public key from /etc/ssh/ssh_host_ed25519_key.pub
+			[try 1]: Forwarding 'host_mod' to json server 'https://ipa2.1.8.ff.es.eu.org/ipa/session/json'
+			SSSD enabled
+			Configured /etc/openldap/ldap.conf
+			NTP enabled
+			Configured /etc/ssh/ssh_config
+			Configured /etc/ssh/sshd_config
+			Configuring 1.8.ff.es.eu.org as NIS domain.
+			Client configuration complete.
+			The ipa-client-install command was successful
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	kinit admin
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+
+	mkdir /exports/home
+	echo "/exports/home  *(rw,sec=sys:krb5:krb5i:krb5p)" >> /etc/exports
+	service nfs start
+	chkconfig nfs on
+
+IPA1 1º
+
+	ipa service-add nfs/nfs1.1.8.ff.es.eu.org
+	ipa service-add nfs/cliente1.1.8.ff.es.eu.org
+	ipa service-add nfs/cliente2.1.8.ff.es.eu.org
+
+	ipa automountmap-add default auto.home
+	ipa automountkey-add default --key "/home"
+	ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 nfs.example.com:/exports/home/&" auto.home
+
+		*Tipo sistema de archivos
+
+Cliente1
+
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org-p nfs/cliente1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+
+	ipa-client-automount --location=default
+
+
+CLiente2
+
+
+
+
+
+
+
+
+ipa: ERROR: The host 'nfs1.1.8.ff.es.eu.org' does not exist to add a service to.
+
