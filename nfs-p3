@@ -69,6 +69,8 @@ NFS1 2º
 	kinit admin
 	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+
 	mkdir /exports/home
 	echo "/exports/home  *(rw,sec=sys:krb5:krb5i:krb5p)" >> /etc/exports
 	service nfs start
@@ -91,15 +93,112 @@ IPA1 1º
 
 
 	ipa service-add nfs/cliente1.1.8.ff.es.eu.org
+
+			[a795809@ipa1 ~]$ ipa service-add nfs/cliente1.1.8.ff.es.eu.org
+			--------------------------------------------------------------
+			Added service "nfs/cliente1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG"
+			--------------------------------------------------------------
+			Principal name: nfs/cliente1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Principal alias: nfs/cliente1.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Managed by: cliente1.1.8.ff.es.eu.org
+
 	ipa service-add nfs/cliente2.1.8.ff.es.eu.org
 
+
+			[a795809@ipa1 ~]$ ipa service-add nfs/cliente2.1.8.ff.es.eu.org
+			--------------------------------------------------------------
+			Added service "nfs/cliente2.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG"
+			--------------------------------------------------------------
+			Principal name: nfs/cliente2.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Principal alias: nfs/cliente2.1.8.ff.es.eu.org@1.8.FF.ES.EU.ORG
+			Managed by: cliente2.1.8.ff.es.eu.org
+
+
 	ipa automountmap-add default auto.home
+
+			[a795809@ipa1 ~]$ ipa automountmap-add default auto.home
+			-------------------------------
+			Added automount map "auto.home"
+			-------------------------------
+			Map: auto.home
+
 	ipa automountkey-add default --key "/home"
-	ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 nfs.example.com:/exports/home/&" auto.home
+			[a795809@ipa1 ~]$ ipa automountkey-add default --key "/home" --info auto.home auto.master
+			---------------------------
+			Added automount key "/home"
+			---------------------------
+			Key: /home
+			Mount information: auto.home
+
+
+
+	ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 nfs1.1.8.ff.es.eu.org:/exports/home/&" auto.home
+
+				[a795809@ipa1 ~]$ ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 nfs1.1.8.ff.es.eu.org:/exports/home/&" auto.home
+				-----------------------
+				Added automount key "*"
+				-----------------------
+				Key: *
+				Mount information: -fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 nfs1.1.8.ff.es.eu.org:/exports/home/&
+
 
 		*Tipo sistema de archivos
 
 Cliente1
+
+	/etc/resolv.conf
+		2001:470:736b:811::2
+
+
+	sudo ipa-client-install --enable-dns-updates
+
+				[a795809@cliente1 ~]$ sudo ipa-client-install --enable-dns-updates
+					WARNING: ntpd time&date synchronization service will not be configured as
+					conflicting service (chronyd) is enabled
+					Use --force-ntpd option to disable it and force configuration of ntpd
+
+					Discovery was successful!
+					Client hostname: cliente1.1.8.ff.es.eu.org
+					Realm: 1.8.FF.ES.EU.ORG
+					DNS Domain: 1.8.ff.es.eu.org
+					IPA Server: ipa1.1.8.ff.es.eu.org
+					BaseDN: dc=1,dc=8,dc=ff,dc=es,dc=eu,dc=org
+
+					Continue to configure the system with these values? [no]: yes
+					Skipping synchronizing time with NTP server.
+					User authorized to enroll computers: admin
+					Password for admin@1.8.FF.ES.EU.ORG:
+					Successfully retrieved CA cert
+						Subject:     CN=Certificate Authority,O=1.8.FF.ES.EU.ORG
+						Issuer:      CN=Certificate Authority,O=1.8.FF.ES.EU.ORG
+						Valid From:  2023-04-12 20:58:15
+						Valid Until: 2043-04-12 20:58:15
+
+					Enrolled in IPA realm 1.8.FF.ES.EU.ORG
+					Created /etc/ipa/default.conf
+					New SSSD config will be created
+					Configured sudoers in /etc/nsswitch.conf
+					Configured /etc/sssd/sssd.conf
+					Configured /etc/krb5.conf for IPA realm 1.8.FF.ES.EU.ORG
+					trying https://ipa1.1.8.ff.es.eu.org/ipa/json
+					[try 1]: Forwarding 'schema' to json server 'https://ipa1.1.8.ff.es.eu.org/ipa/json'
+					trying https://ipa1.1.8.ff.es.eu.org/ipa/session/json
+					[try 1]: Forwarding 'ping' to json server 'https://ipa1.1.8.ff.es.eu.org/ipa/session/json'
+					[try 1]: Forwarding 'ca_is_enabled' to json server 'https://ipa1.1.8.ff.es.eu.org/ipa/session/json'
+					Systemwide CA database updated.
+					Missing reverse record(s) for address(es): 2001:470:736b:f000:b344:e0b5:d251:1608.
+					Adding SSH public key from /etc/ssh/ssh_host_rsa_key.pub
+					Adding SSH public key from /etc/ssh/ssh_host_ecdsa_key.pub
+					Adding SSH public key from /etc/ssh/ssh_host_ed25519_key.pub
+					[try 1]: Forwarding 'host_mod' to json server 'https://ipa1.1.8.ff.es.eu.org/ipa/session/json'
+					SSSD enabled
+					Configured /etc/openldap/ldap.conf
+					Configured /etc/ssh/ssh_config
+					Configured /etc/ssh/sshd_config
+					Configuring 1.8.ff.es.eu.org as NIS domain.
+					Client configuration complete.
+					The ipa-client-install command was successful
+
 
 	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org-p nfs/cliente1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 
@@ -119,6 +218,11 @@ ipa: ERROR: The host 'nfs1.1.8.ff.es.eu.org' does not exist to add a service to.
 /etc/resolv.conf cambio de server
 
 kinit: Cannot find KDC for realm "1.8.FF.ES.EU.ORG" while getting initial credentials
-/etc/resolv.conf en nfs1
+/etc/resolv.conf en nfs1 añadir ipa1 e ipa2
+
+
+[a795809@nfs1 ~]$ ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+Failed to add key to the keytab
+
 
 
