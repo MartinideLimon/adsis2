@@ -216,7 +216,7 @@ if options[:router] && !options[:shut]
 	end
 end
 
-#CONEXION POR SSH
+#CONEXION POR SSH a795809@
 if options[:conn]
 	puts "Conectandose a la máquina #{ARGV[0]} con ip #{ips["#{ARGV[0]}"]}"
 	system("ssh -6 a795809@#{ips["#{ARGV[0]}"]}")

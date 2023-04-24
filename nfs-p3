@@ -67,7 +67,8 @@ NFS1 2º
 
 
 	kinit admin
-	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb51.keytab
+	ipa-getkeytab -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab -s ipa1.1.8.ff.es.eu.org
 
 	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 
@@ -200,7 +201,8 @@ Cliente1
 					The ipa-client-install command was successful
 
 
-	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org-p nfs/cliente1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/cliente1.1.8.ff.es.eu.org -k /etc/krb5.keytab
+	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/cliente1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 
 	ipa-client-automount --location=default
 
@@ -223,6 +225,10 @@ kinit: Cannot find KDC for realm "1.8.FF.ES.EU.ORG" while getting initial creden
 
 [a795809@nfs1 ~]$ ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 Failed to add key to the keytab
+cambio el nombre a krb51
+
+Could not chdir to home directory /home/a795809: No such file or directory
+
 
 
 
