@@ -72,10 +72,19 @@ NFS1 2º
 
 	ipa-getkeytab -s ipa1.1.8.ff.es.eu.org -p nfs/nfs1.1.8.ff.es.eu.org -k /etc/krb5.keytab
 
-	mkdir /exports/home
+	mkdir  -p /exports/home
 	echo "/exports/home  *(rw,sec=sys:krb5:krb5i:krb5p)" >> /etc/exports
 	service nfs start
 	chkconfig nfs on
+
+
+
+	chown a795809:a795809 /home/a795809
+	chmod 0700 /home/a795809
+
+	chown martina:martina martina
+	chmod 0700 martina
+	ipa passwd martina
 
 IPA1 1º
 
