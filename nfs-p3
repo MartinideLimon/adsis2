@@ -86,6 +86,9 @@ NFS1 2º
 	chmod 0700 martina
 	ipa passwd martina
 
+
+	chmod 0700 /home/gian1312/.bashrc
+
 IPA1 1º
 
 	/etc/resolv.conf
